@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Presentación interactiva de Teoría de Grafos - Algoritmos BFS, DFS, Dijkstra, Bellman-Ford y Floyd-Warshall con animaciones">
+    <meta name="description" content="Presentación interactiva de Teoría de Grafos - BFS, DFS, Dijkstra, Bellman-Ford, Floyd-Warshall, ciclos, Kahn, Union-Find, Kruskal y Prim con animaciones">
     <title>Grafos - Lenguajes y Compiladores</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -279,6 +279,7 @@
             position: relative;
             max-height: 350px;
             overflow-y: auto;
+            white-space: pre;   /* conserva saltos de línea e indentación del código */
         }
 
         .code-block .code-label {
@@ -666,6 +667,7 @@
             line-height: 1.7;
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
             color: var(--text-secondary);
+            white-space: pre;   /* conserva saltos de línea del pseudocódigo */
         }
 
         .pseudo-code .kw { color: #c792ea; font-weight: 600; }
@@ -821,10 +823,15 @@
                 <span class="tag">Dijkstra</span>
                 <span class="tag">Bellman-Ford</span>
                 <span class="tag">Floyd-Warshall</span>
+                <span class="tag">Ciclos</span>
+                <span class="tag">Kahn</span>
+                <span class="tag">Union-Find</span>
+                <span class="tag">Kruskal</span>
+                <span class="tag">Prim</span>
             </div>
             <div class="hero-meta" style="justify-content: center; margin-top: 2em;">
-                <span>📚 5 Algoritmos</span>
-                <span>🧩 8 Ejercicios</span>
+                <span>📚 10 Algoritmos</span>
+                <span>🧩 11 Ejercicios</span>
                 <span>🎬 Animaciones Interactivas</span>
             </div>
         </div>
@@ -1457,6 +1464,157 @@ dist[i][j] = <span class="fn">min</span>(
         </div>
     </div>
 
+    <!-- ===================== SLIDE: UNION-FIND (Union y Union by Rank) ===================== -->
+    <div class="slide">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-4">Union-Find — Union y Union by Rank</h2>
+            <p class="slide-subtitle">DSU (Disjoint Set Union): la estructura que hace eficiente a Kruskal · find() + union()</p>
+
+            <div class="two-cols-wide">
+                <div>
+                    <div class="glass-card" style="text-align: left; margin-bottom: 1em;">
+                        <h3>🔗 ¿Qué es Union-Find?</h3>
+                        <p>Mantiene conjuntos <strong>disjuntos</strong>. Dos operaciones:</p>
+                        <ul>
+                            <li><strong>find(x)</strong>: ¿a qué conjunto pertenece x? (devuelve la raíz)</li>
+                            <li><strong>union(x,y)</strong>: fusionar los conjuntos de x e y</li>
+                        </ul>
+                        <p style="margin-top: 0.5em; color: var(--accent-3);">En Kruskal: si find(u) == find(v), agregar la arista u—v formaría un <strong>ciclo</strong>.</p>
+                    </div>
+
+                    <div class="glass-card" style="text-align: left; margin-bottom: 1em;">
+                        <h3>⚡ Path Compression (find)</h3>
+                        <p>Al buscar la raíz, colgamos <strong>cada nodo</strong> directamente de ella:</p>
+                        <div class="code-block" style="max-height: none; font-size: 0.8rem;">
+Antes: 0←1←2←3   (cadena)
+find(3): recorre 3→2→1→0
+Después: 0←1, 0←2, 0←3  (plano)
+                        </div>
+                    </div>
+
+                    <div class="glass-card" style="text-align: left;">
+                        <h3>⚖️ Union Naive vs Union by Rank</h3>
+                        <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-glass);">
+                                    <th style="padding: 0.4em; text-align: left;"></th>
+                                    <th style="padding: 0.4em; color: var(--accent-4);">Union Naive</th>
+                                    <th style="padding: 0.4em; color: var(--accent-6);">Union by Rank</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-glass);">
+                                    <td style="padding: 0.4em;"><strong>Estrategia</strong></td>
+                                    <td style="padding: 0.4em;">Cuelga rx de ry (arbitrario)</td>
+                                    <td style="padding: 0.4em;">Cuelga el más bajo del más alto</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-glass);">
+                                    <td style="padding: 0.4em;"><strong>Peor caso</strong></td>
+                                    <td style="padding: 0.4em; color: var(--accent-4);">O(n) sin PC</td>
+                                    <td style="padding: 0.4em; color: var(--accent-6);">O(log n) sin PC</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.4em;"><strong>Con PC</strong></td>
+                                    <td style="padding: 0.4em;">O(log n) amort.</td>
+                                    <td style="padding: 0.4em; color: var(--accent-6);">O(α(n)) ≈ O(1)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 0.5em; font-size: 0.75rem; color: var(--text-muted);">PC = Path Compression · α = inversa de Ackermann</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="code-block" style="max-height: 260px;">
+                        <span class="code-label">Java — Union Naive</span>
+<span class="cm">// Union NAIVE: cuelga rx de ry sin</span>
+<span class="cm">// considerar cuál árbol es más alto</span>
+<span class="kw">boolean</span> <span class="fn">union</span>(<span class="tp">int</span> x, <span class="tp">int</span> y) {
+    <span class="tp">int</span> rx = <span class="fn">find</span>(x);
+    <span class="tp">int</span> ry = <span class="fn">find</span>(y);
+    <span class="kw">if</span> (rx == ry) <span class="kw">return false</span>;
+
+    <span class="cm">// Siempre cuelga rx de ry</span>
+    <span class="cm">// (puede crear cadenas largas)</span>
+    parent[rx] = ry;
+    <span class="kw">return true</span>;
+}
+                    </div>
+                    <div class="code-block" style="max-height: 340px; margin-top: 0.8em;">
+                        <span class="code-label">Java — Union by Rank</span>
+<span class="cm">// UNION BY RANK: el árbol más bajo</span>
+<span class="cm">// se cuelga del más alto → O(α(n))</span>
+<span class="kw">boolean</span> <span class="fn">union</span>(<span class="tp">int</span> x, <span class="tp">int</span> y) {
+    <span class="tp">int</span> rx = <span class="fn">find</span>(x);
+    <span class="tp">int</span> ry = <span class="fn">find</span>(y);
+    <span class="kw">if</span> (rx == ry) <span class="kw">return false</span>;
+
+    <span class="kw">if</span> (rank[rx] &lt; rank[ry]) {
+        parent[rx] = ry;  <span class="cm">// rx más bajo</span>
+    } <span class="kw">else if</span> (rank[rx] &gt; rank[ry]) {
+        parent[ry] = rx;  <span class="cm">// ry más bajo</span>
+    } <span class="kw">else</span> {
+        parent[ry] = rx;  <span class="cm">// misma h.</span>
+        rank[rx]++;       <span class="cm">// crece en 1</span>
+    }
+    <span class="kw">return true</span>;
+}
+                    </div>
+                    <div class="code-block" style="max-height: 150px; margin-top: 0.8em;">
+                        <span class="code-label">Java — find (Path Compression)</span>
+<span class="cm">// find con PATH COMPRESSION</span>
+<span class="cm">// Cuelga cada nodo directo de la raíz</span>
+<span class="tp">int</span> <span class="fn">find</span>(<span class="tp">int</span> x) {
+    <span class="kw">if</span> (parent[x] != x)
+        parent[x] = <span class="fn">find</span>(parent[x]);
+    <span class="kw">return</span> parent[x];
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: UNION-FIND INTERACTIVO ===================== -->
+    <div class="slide">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-2">Union-Find en Acción</h2>
+            <p class="slide-subtitle">Las mismas 5 uniones con ambas estrategias · union(1,0) · union(3,2) · union(5,4) · union(3,0) · union(5,0)</p>
+
+            <div class="two-cols">
+                <div>
+                    <h3 style="text-align: center; color: var(--accent-4);">Union Naive</h3>
+                    <div class="canvas-container">
+                        <canvas id="ufNaiveCanvas" width="520" height="330"></canvas>
+                        <div class="animation-controls">
+                            <button class="anim-btn primary" onclick="startUFNaive()">▶ Ejecutar</button>
+                            <button class="anim-btn" onclick="pauseUFNaive()">⏸ Pausar</button>
+                            <button class="anim-btn" onclick="resetUFNaive()">↺ Reset</button>
+                            <span class="anim-status" id="ufNaiveStatus">Listo</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="text-align: center; color: var(--accent-6);">Union by Rank</h3>
+                    <div class="canvas-container">
+                        <canvas id="ufRankCanvas" width="520" height="330"></canvas>
+                        <div class="animation-controls">
+                            <button class="anim-btn primary" onclick="startUFRank()">▶ Ejecutar</button>
+                            <button class="anim-btn" onclick="pauseUFRank()">⏸ Pausar</button>
+                            <button class="anim-btn" onclick="resetUFRank()">↺ Reset</button>
+                            <span class="anim-status" id="ufRankStatus">Listo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card mt-1" style="padding: 14px 20px;">
+                <p style="font-size: 0.9rem;">🎬 Cada animación muestra el <strong>bosque de árboles</strong> y el arreglo <strong>parent[]</strong> (y <strong>rank[]</strong>) tras cada operación. Al final se ejecuta un <strong>find()</strong> con <strong>path compression</strong> para ver cómo el árbol se aplana. Compara la forma final de ambos bosques: naive deja cadenas (0←2←3, 0←4←5); rank produce un árbol más ancho y plano.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ===================== SLIDE: KRUSKAL (MST) ===================== -->
     <div class="slide">
         <span class="slide-number-badge"></span>
@@ -1656,6 +1814,13 @@ dist[i][j] = <span class="fn">min</span>(
                         <td>Orden de compilación/dependencias, detecta ciclos</td>
                     </tr>
                     <tr>
+                        <td><strong>Union-Find (DSU)</strong></td>
+                        <td><span class="badge yellow">Estructura</span></td>
+                        <td>O(α(n)) amortizado</td>
+                        <td>N/A</td>
+                        <td>Conjuntos disjuntos; detecta ciclos en Kruskal</td>
+                    </tr>
+                    <tr>
                         <td><strong>Kruskal</strong></td>
                         <td><span class="badge purple">Greedy</span></td>
                         <td>O(E log E)</td>
@@ -1733,6 +1898,30 @@ Representación visual:
                             <li>Sacar 5 → sin vecinos → Cola = []</li>
                         </ul>
                         <p class="mt-1"><strong>Distancia de 0 a 5:</strong> 2 aristas (camino 0→2→5)</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public void</span> <span class="fn">bfs</span>(<span class="tp">int</span> start, <span class="tp">int</span> target) {
+    Queue&lt;Integer&gt; q = <span class="kw">new</span> LinkedList&lt;&gt;();
+    <span class="tp">boolean</span>[] visitados = <span class="kw">new</span> <span class="tp">boolean</span>[V];
+    <span class="tp">int</span>[] dist = <span class="kw">new</span> <span class="tp">int</span>[V];
+
+    q.add(start); visitados[start] = <span class="kw">true</span>; dist[start] = <span class="nb">0</span>;
+
+    <span class="kw">while</span>(!q.isEmpty()) {
+        <span class="tp">int</span> u = q.poll();
+        <span class="kw">if</span>(u == target) {
+            System.out.println(<span class="st">"Distancia: "</span> + dist[u]);
+            <span class="kw">return</span>;
+        }
+        <span class="kw">for</span>(<span class="tp">int</span> v : adj.get(u)) {
+            <span class="kw">if</span>(!visitados[v]) {
+                visitados[v] = <span class="kw">true</span>;
+                dist[v] = dist[u] + <span class="nb">1</span>;
+                q.add(v);
+            }
+        }
+    }
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1772,6 +1961,27 @@ Visualmente:
                             <li><strong>Componente 3:</strong> {5, 6, 7} — DFS desde 5: visita 5→6→7</li>
                         </ul>
                         <p class="mt-1"><strong>Algoritmo:</strong> Para encontrar componentes, iterar sobre todos los nodos. Si un nodo no ha sido visitado, lanzar DFS desde él → todos los nodos visitados en ese DFS forman una componente.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public int</span> <span class="fn">contarComponentes</span>() {
+    <span class="tp">boolean</span>[] visitados = <span class="kw">new</span> <span class="tp">boolean</span>[V];
+    <span class="tp">int</span> componentes = <span class="nb">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">0</span>; i &lt; V; i++) {
+        <span class="kw">if</span> (!visitados[i]) {
+            componentes++;
+            <span class="fn">dfs</span>(i, visitados); <span class="cm">// Visita todo el componente</span>
+        }
+    }
+    <span class="kw">return</span> componentes;
+}
+
+<span class="kw">private void</span> <span class="fn">dfs</span>(<span class="tp">int</span> u, <span class="tp">boolean</span>[] visitados) {
+    visitados[u] = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> v : adj.get(u)) {
+        <span class="kw">if</span> (!visitados[v]) <span class="fn">dfs</span>(v, visitados);
+    }
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1815,6 +2025,30 @@ Aristas: A→B(4), A→C(2), B→D(2), B→E(1), C→E(5),
                         </ul>
                         <p class="mt-1"><strong>Camino más corto A→F:</strong> A → B → E → F (costo: 6)</p>
                         <p style="color: var(--accent-5); font-size: 0.9rem; margin-top: 0.5em;">Nota: A→C→E→F (2+5+1=8) es más largo aunque A→C es la arista más barata desde A</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public void</span> <span class="fn">dijkstra</span>(<span class="tp">int</span> start) {
+    <span class="tp">int</span>[] dist = <span class="kw">new</span> <span class="tp">int</span>[V];
+    Arrays.<span class="fn">fill</span>(dist, Integer.MAX_VALUE);
+    dist[start] = <span class="nb">0</span>;
+
+    PriorityQueue&lt;<span class="tp">int</span>[]&gt; pq = <span class="kw">new</span> PriorityQueue&lt;&gt;((a, b) -&gt; a[<span class="nb">1</span>] - b[<span class="nb">1</span>]);
+    pq.add(<span class="kw">new</span> <span class="tp">int</span>[]{start, <span class="nb">0</span>});
+
+    <span class="kw">while</span> (!pq.isEmpty()) {
+        <span class="tp">int</span>[] actual = pq.poll();
+        <span class="tp">int</span> u = actual[<span class="nb">0</span>], d = actual[<span class="nb">1</span>];
+
+        <span class="kw">if</span> (d &gt; dist[u]) <span class="kw">continue</span>; <span class="cm">// Ya encontramos un camino mejor antes</span>
+
+        <span class="kw">for</span> (Edge e : adj.get(u)) {
+            <span class="kw">if</span> (dist[u] + e.weight &lt; dist[e.target]) {
+                dist[e.target] = dist[u] + e.weight;
+                pq.add(<span class="kw">new</span> <span class="tp">int</span>[]{e.target, dist[e.target]});
+            }
+        }
+    }
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1857,6 +2091,32 @@ Ciclo: 1 → 2 → 3 → 1 (peso: 3 + 2 + (-7) = -2)
                             <li>Iteración 3: dist = [0, -1, 4, 6] (3→1: 6-7=-1 < 1 ✓)</li>
                             <li>Iteración extra: 1→2 se relaja (-1+3=2 < 4) → <strong>¡CICLO NEGATIVO!</strong></li>
                         </ul>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public boolean</span> <span class="fn">tieneCicloNegativo</span>(<span class="tp">int</span> start) {
+    <span class="tp">int</span>[] dist = <span class="kw">new</span> <span class="tp">int</span>[V];
+    Arrays.<span class="fn">fill</span>(dist, Integer.MAX_VALUE);
+    dist[start] = <span class="nb">0</span>;
+
+    <span class="cm">// Relajar todas las aristas V-1 veces</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">1</span>; i &lt; V; i++) {
+        <span class="kw">for</span> (Edge e : edges) {
+            <span class="kw">if</span> (dist[e.source] != Integer.MAX_VALUE &amp;&amp; 
+                dist[e.source] + e.weight &lt; dist[e.target]) {
+                dist[e.target] = dist[e.source] + e.weight;
+            }
+        }
+    }
+
+    <span class="cm">// Iteración extra para detectar ciclos</span>
+    <span class="kw">for</span> (Edge e : edges) {
+        <span class="kw">if</span> (dist[e.source] != Integer.MAX_VALUE &amp;&amp; 
+            dist[e.source] + e.weight &lt; dist[e.target]) {
+            <span class="kw">return true</span>; <span class="cm">// ¡Ciclo negativo encontrado!</span>
+        }
+    }
+    <span class="kw">return false</span>;
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1901,6 +2161,23 @@ Matriz inicial:
                         <p class="mt-1"><strong>Distancia 0→3 = 9</strong> (camino: 0→1→2→3, costo 5+3+1=9)</p>
                         <p>Mejor que el camino directo 0→3 con costo 10</p>
                         <p class="mt-1" style="color: var(--accent-5);">Nota: Al considerar k=1, dist[0][2] se actualiza a 5+3=8. Al considerar k=2, dist[0][3] se actualiza a 8+1=9.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public void</span> <span class="fn">floydWarshall</span>(<span class="tp">int</span>[][] dist) {
+    <span class="cm">// dist ya tiene distancias directas y 0 en la diagonal</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> k = <span class="nb">0</span>; k &lt; V; k++) {          <span class="cm">// Nodo intermedio</span>
+        <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">0</span>; i &lt; V; i++) {      <span class="cm">// Nodo origen</span>
+            <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nb">0</span>; j &lt; V; j++) {  <span class="cm">// Nodo destino</span>
+                <span class="kw">if</span> (dist[i][k] != Integer.MAX_VALUE &amp;&amp; 
+                    dist[k][j] != Integer.MAX_VALUE &amp;&amp; 
+                    dist[i][k] + dist[k][j] &lt; dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1942,6 +2219,28 @@ se compile DESPUÉS de sus dependencias?
                             <li>Pila (top→bottom): main, codegen, parser, ast, lexer, utils</li>
                             <li>Invertir: utils, lexer, ast, parser, codegen, main ✓</li>
                         </ul>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public</span> List&lt;Integer&gt; <span class="fn">ordenTopologico</span>() {
+    <span class="tp">boolean</span>[] visitados = <span class="kw">new</span> <span class="tp">boolean</span>[V];
+    Stack&lt;Integer&gt; pila = <span class="kw">new</span> Stack&lt;&gt;();
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">0</span>; i &lt; V; i++) {
+        <span class="kw">if</span> (!visitados[i]) <span class="fn">dfsTopo</span>(i, visitados, pila);
+    }
+
+    List&lt;Integer&gt; orden = <span class="kw">new</span> ArrayList&lt;&gt;();
+    <span class="kw">while</span> (!pila.isEmpty()) orden.add(pila.pop());
+    <span class="kw">return</span> orden;
+}
+
+<span class="kw">private void</span> <span class="fn">dfsTopo</span>(<span class="tp">int</span> u, <span class="tp">boolean</span>[] visitados, Stack&lt;Integer&gt; pila) {
+    visitados[u] = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> v : adj.get(u)) {
+        <span class="kw">if</span> (!visitados[v]) <span class="fn">dfsTopo</span>(v, visitados, pila);
+    }
+    pila.push(u); <span class="cm">// ¡Clave! Se agrega al terminar sus dependencias</span>
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1979,11 +2278,29 @@ Al relajar una arista u→v:
                             <li>dist[0]=0, prev[0]=null</li>
                             <li>dist[1]=2, prev[1]=0 (0→1, costo 2)</li>
                             <li>dist[2]=6, prev[2]=0 (0→2, costo 6)</li>
-                            <li>dist[3]=7, prev[3]=2 (0→2→3, costo 6+1=7. No 0→1→3 con 2+5=7, empatan)</li>
-                            <li>dist[4]=9, prev[4]=3 (0→2→3→4, costo 7+2=9)</li>
+                            <li>dist[3]=7, prev[3]=1 (0→1→3, costo 2+5=7. Empata con 0→2→3 = 6+1=7, pero el nodo 1 se procesa primero y la relajación usa &lt; estricto: el empate NO actualiza prev)</li>
+                            <li>dist[4]=9, prev[4]=3 (0→1→3→4, costo 7+2=9)</li>
                         </ul>
-                        <p class="mt-1"><strong>Camino 0→4:</strong> Reconstruir desde prev[]: 4←3←2←0</p>
-                        <p style="font-family: 'JetBrains Mono', monospace; color: var(--accent-3); font-size: 1.1rem; margin: 0.5em 0;">0 → 2 → 3 → 4 (costo total: 9)</p>
+                        <p class="mt-1"><strong>Camino 0→4:</strong> Reconstruir desde prev[]: 4←3←1←0</p>
+                        <p style="font-family: 'JetBrains Mono', monospace; color: var(--accent-3); font-size: 1.1rem; margin: 0.5em 0;">0 → 1 → 3 → 4 (costo total: 9)</p>
+                        <p style="color: var(--accent-5); font-size: 0.9rem;">Nota: 0→2→3→4 también cuesta 9 — ambos son caminos mínimos válidos; prev[] guarda el que el algoritmo encontró primero.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="cm">// Asumiendo que Dijkstra ya llenó el arreglo prev[]</span>
+<span class="kw">public</span> List&lt;Integer&gt; <span class="fn">reconstruirCamino</span>(<span class="tp">int</span>[] prev, <span class="tp">int</span> destino) {
+    List&lt;Integer&gt; camino = <span class="kw">new</span> ArrayList&lt;&gt;();
+    <span class="tp">int</span> actual = destino;
+
+    <span class="cm">// Rastrear hacia atrás desde el destino</span>
+    <span class="kw">while</span> (actual != -<span class="nb">1</span>) {  <span class="cm">// Asumiendo que prev[start] es -1 o null</span>
+        camino.add(actual);
+        actual = prev[actual];
+    }
+
+    <span class="cm">// El camino se construyó al revés, hay que invertirlo</span>
+    Collections.<span class="fn">reverse</span>(camino);
+    <span class="kw">return</span> camino;
+}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2030,6 +2347,306 @@ Método 2: Ejecutar Floyd-Warshall una vez
                             <li style="margin-left: 1.5em;">Floyd-Warshall: O(V³) = O(1000³) = 1000M ops</li>
                             <li><strong>Conclusión:</strong> Para grafos dispersos grandes, Dijkstra × V es mejor. Floyd-Warshall es mejor para grafos densos (E ≈ V²).</li>
                         </ul>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="cm">// Método 1: Dijkstra N veces (O(V * (V+E) log V))</span>
+<span class="kw">public void</span> <span class="fn">todosLosParesDijkstra</span>() {
+    <span class="tp">int</span>[][] dist = <span class="kw">new</span> <span class="tp">int</span>[V][V];
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">0</span>; i &lt; V; i++) {
+        dist[i] = <span class="fn">dijkstra</span>(i); <span class="cm">// Retorna arreglo int[]</span>
+    }
+}
+
+<span class="cm">// Método 2: Floyd-Warshall una vez (O(V^3))</span>
+<span class="kw">public void</span> <span class="fn">todosLosParesFW</span>(<span class="tp">int</span>[][] matrizAdyacencia) {
+    <span class="tp">int</span>[][] dist = <span class="fn">clonarMatriz</span>(matrizAdyacencia);
+    <span class="kw">for</span> (<span class="tp">int</span> k = <span class="nb">0</span>; k &lt; V; k++) {
+        <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">0</span>; i &lt; V; i++) {
+            <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nb">0</span>; j &lt; V; j++) {
+                <span class="kw">if</span> (dist[i][k] != Integer.MAX_VALUE &amp;&amp; 
+                    dist[k][j] != Integer.MAX_VALUE &amp;&amp; 
+                    dist[i][k] + dist[k][j] &lt; dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 9 — UNION NAIVE ===================== -->
+    <div class="slide">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-4">Ejercicio 9 — Union Naive</h2>
+            <div class="exercise-card">
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star empty">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Trazar Union-Find con Union Naive (sin rank)</h3>
+                <p>Dado un conjunto de 6 elementos <strong>{0, 1, 2, 3, 4, 5}</strong>, ejecuta las siguientes operaciones con <strong>union naive</strong> (siempre cuelga la raíz de x debajo de la raíz de y):</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Estado inicial: parent = [0, 1, 2, 3, 4, 5]
+(cada elemento es su propia raíz)
+
+Operaciones:
+  1. union(1, 0)
+  2. union(3, 2)
+  3. union(5, 4)
+  4. union(3, 0)
+  5. union(5, 0)
+
+Regla union naive: parent[find(x)] = find(y)
+(la raíz de x se cuelga de la raíz de y)
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿Cómo queda <code>parent[]</code> después de cada operación? ¿Cuántos saltos necesita <code>find(5)</code> al final (sin path compression)?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol9')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol9">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>Traza paso a paso:</strong></p>
+                        <div class="code-block" style="max-height: none;">
+Inicio:  parent = [0, 1, 2, 3, 4, 5]
+         Conjuntos: {0} {1} {2} {3} {4} {5}
+
+1. union(1, 0):
+   find(1)=1, find(0)=0 → parent[1] = 0
+   parent = [0, 0, 2, 3, 4, 5]
+   Conjuntos: {0,1} {2} {3} {4} {5}
+   Árbol: 0←1
+
+2. union(3, 2):
+   find(3)=3, find(2)=2 → parent[3] = 2
+   parent = [0, 0, 2, 2, 4, 5]
+   Conjuntos: {0,1} {2,3} {4} {5}
+   Árbol: 2←3
+
+3. union(5, 4):
+   find(5)=5, find(4)=4 → parent[5] = 4
+   parent = [0, 0, 2, 2, 4, 4]
+   Conjuntos: {0,1} {2,3} {4,5}
+   Árbol: 4←5
+
+4. union(3, 0):
+   find(3)=2, find(0)=0 → parent[2] = 0
+   parent = [0, 0, 0, 2, 4, 4]
+   Conjuntos: {0,1,2,3} {4,5}
+   Árbol: 0←1, 0←2←3
+
+5. union(5, 0):
+   find(5)=4, find(0)=0 → parent[4] = 0
+   parent = [0, 0, 0, 2, 0, 4]
+   Conjuntos: {0,1,2,3,4,5}
+   Árbol: 0←1, 0←2←3, 0←4←5
+                        </div>
+                        <p class="mt-1"><strong>find(5) sin path compression:</strong> 5→4→0 = <strong>2 saltos</strong></p>
+                        <p><strong>find(3) sin path compression:</strong> 3→2→0 = <strong>2 saltos</strong></p>
+                        <p style="color: var(--accent-4);">⚠️ Con union naive, la altura depende del orden de las operaciones. En el peor caso (uniones encadenadas), la altura puede ser O(n).</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="cm">// Implementación de las operaciones del ejercicio</span>
+UnionFindNaive naive = <span class="kw">new</span> UnionFindNaive(<span class="nb">6</span>);
+
+<span class="cm">// Se ejecuta: parent[find(x)] = find(y)</span>
+naive.<span class="fn">union</span>(<span class="nb">1</span>, <span class="nb">0</span>);  <span class="cm">// parent[1] = 0</span>
+naive.<span class="fn">union</span>(<span class="nb">3</span>, <span class="nb">2</span>);  <span class="cm">// parent[3] = 2</span>
+naive.<span class="fn">union</span>(<span class="nb">5</span>, <span class="nb">4</span>);  <span class="cm">// parent[5] = 4</span>
+naive.<span class="fn">union</span>(<span class="nb">3</span>, <span class="nb">0</span>);  <span class="cm">// parent[2] = 0 (la raíz de 3 es 2)</span>
+naive.<span class="fn">union</span>(<span class="nb">5</span>, <span class="nb">0</span>);  <span class="cm">// parent[4] = 0 (la raíz de 5 es 4)</span>
+
+<span class="cm">// Resultado en parent[]: [0, 0, 0, 2, 0, 4]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 10 — UNION BY RANK ===================== -->
+    <div class="slide">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-2">Ejercicio 10 — Union by Rank</h2>
+            <div class="exercise-card">
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Trazar Union-Find con Union by Rank</h3>
+                <p>Mismas operaciones que el ejercicio anterior, pero ahora con <strong>union by rank</strong>. Traza <code>parent[]</code> y <code>rank[]</code> en cada paso:</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Estado inicial:
+  parent = [0, 1, 2, 3, 4, 5]
+  rank   = [0, 0, 0, 0, 0, 0]
+
+Operaciones (mismas que antes):
+  1. union(1, 0)     4. union(3, 0)
+  2. union(3, 2)     5. union(5, 0)
+  3. union(5, 4)
+
+Regla union by rank:
+  Si rank[rx] &lt; rank[ry]: parent[rx] = ry
+  Si rank[rx] &gt; rank[ry]: parent[ry] = rx
+  Si rank[rx] == rank[ry]: parent[ry] = rx, rank[rx]++
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿Cómo quedan <code>parent[]</code> y <code>rank[]</code>? ¿Cuántos saltos necesita <code>find(4)</code> sin path compression? Compara con la versión naive.</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol10')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol10">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>Traza paso a paso:</strong></p>
+                        <div class="code-block" style="max-height: none;">
+Inicio:  parent = [0, 1, 2, 3, 4, 5]
+         rank   = [0, 0, 0, 0, 0, 0]
+
+1. union(1, 0):
+   find(1)=1, find(0)=0 → rank iguales (0==0)
+   → parent[0] = 1, rank[1]++
+   parent = [1, 1, 2, 3, 4, 5]
+   rank   = [0, 1, 0, 0, 0, 0]
+   Árbol: 1←0  (1 es raíz, rank 1)
+
+2. union(3, 2):
+   find(3)=3, find(2)=2 → rank iguales (0==0)
+   → parent[2] = 3, rank[3]++
+   parent = [1, 1, 3, 3, 4, 5]
+   rank   = [0, 1, 0, 1, 0, 0]
+   Árbol: 3←2  (3 es raíz, rank 1)
+
+3. union(5, 4):
+   find(5)=5, find(4)=4 → rank iguales (0==0)
+   → parent[4] = 5, rank[5]++
+   parent = [1, 1, 3, 3, 5, 5]
+   rank   = [0, 1, 0, 1, 0, 1]
+   Árbol: 5←4  (5 es raíz, rank 1)
+
+4. union(3, 0):
+   find(3)=3, find(0)=1 → rank iguales (1==1)
+   → parent[1] = 3, rank[3]++
+   parent = [1, 3, 3, 3, 5, 5]
+   rank   = [0, 1, 0, 2, 0, 1]
+   Árbol:     3          (rank 2)
+            / | \
+           1  2  (3 tiene 3 hijos directos)
+           |
+           0
+
+5. union(5, 0):
+   find(5)=5, find(0)=3 → rank[5]=1 &lt; rank[3]=2
+   → parent[5] = 3 (5 se cuelga de 3)
+   parent = [1, 3, 3, 3, 5, 3]
+   rank   = [0, 1, 0, 2, 0, 1]
+   Árbol:       3          (rank 2)
+             / | \ \
+            1  2  5
+            |     |
+            0     4
+                        </div>
+                        <p class="mt-1"><strong>find(4) sin PC:</strong> 4→5→3 = <strong>2 saltos</strong> (mismo que naive aquí)</p>
+                        <p><strong>Diferencia clave:</strong> La raíz con union by rank es <strong>3</strong> (rank 2), mientras que con naive es <strong>0</strong>. El árbol con rank es más <strong>ancho y plano</strong> — la altura máxima está garantizada ≤ log₂(6) ≈ 2.58, es decir, máximo <strong>2</strong>.</p>
+                        <p style="color: var(--accent-6);">✅ Con union by rank + path compression, cada operación tarda O(α(n)) ≈ O(1). ¡La combinación perfecta para Kruskal!</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="cm">// Implementación de las operaciones del ejercicio</span>
+UnionFindRank uf = <span class="kw">new</span> UnionFindRank(<span class="nb">6</span>);
+
+uf.<span class="fn">union</span>(<span class="nb">1</span>, <span class="nb">0</span>);  <span class="cm">// Mismo rank(0). Cuelga 0 de 1. rank[1] = 1</span>
+uf.<span class="fn">union</span>(<span class="nb">3</span>, <span class="nb">2</span>);  <span class="cm">// Mismo rank(0). Cuelga 2 de 3. rank[3] = 1</span>
+uf.<span class="fn">union</span>(<span class="nb">5</span>, <span class="nb">4</span>);  <span class="cm">// Mismo rank(0). Cuelga 4 de 5. rank[5] = 1</span>
+
+<span class="cm">// raíces(3,0) = 3(rank 1), 1(rank 1)</span>
+uf.<span class="fn">union</span>(<span class="nb">3</span>, <span class="nb">0</span>);  <span class="cm">// Mismo rank. Cuelga 1 de 3. rank[3] = 2</span>
+
+<span class="cm">// raíces(5,0) = 5(rank 1), 3(rank 2)</span>
+uf.<span class="fn">union</span>(<span class="nb">5</span>, <span class="nb">0</span>);  <span class="cm">// rank 5 &lt; rank 3. Cuelga 5 de 3. rank[3] = 2 (no cambia)</span>
+
+<span class="cm">// Resultado en parent[]: [1, 3, 3, 3, 5, 3]</span>
+<span class="cm">// Resultado en rank[]:   [0, 1, 0, 2, 0, 1]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 11 — KRUSKAL + UNION-FIND ===================== -->
+    <div class="slide">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-4">Ejercicio 11 — Kruskal con Union-Find</h2>
+            <div class="exercise-card">
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Trazar Kruskal usando Union-Find</h3>
+                <p>Aplica Kruskal al siguiente grafo <strong>no dirigido</strong> (el mismo de la animación). Usa union naive y traza <code>parent[]</code> en cada paso:</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Nodos: {0, 1, 2, 3}
+Aristas: 2-3 (4), 0-3 (5), 0-2 (6), 0-1 (10), 1-3 (15)
+
+       0
+     / | \
+   10  5  6
+   /   |   \
+  1    3----2
+   \   |   4
+   15  |
+     \ |
+      (1-3)
+
+Estado inicial: parent = [0, 1, 2, 3]
+Regla: union(u, v) → parent[find(u)] = find(v)
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿En qué orden se evalúan las aristas? ¿Cuál se descarta y por qué? ¿Cuál es el costo total del MST y cómo queda <code>parent[]</code>?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol11')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol11">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>Paso 1:</strong> ordenar aristas por peso ascendente: (2-3):4, (0-3):5, (0-2):6, (0-1):10, (1-3):15</p>
+                        <p class="mt-1"><strong>Traza:</strong></p>
+                        <div class="code-block" style="max-height: none;">
+Inicio: parent = [0, 1, 2, 3]
+
+1. Arista 2-3 (peso 4):
+   find(2)=2, find(3)=3 → distintos → UNIR
+   parent[2] = 3 → parent = [0, 1, 3, 3]
+   MST = {2-3}                    costo = 4
+
+2. Arista 0-3 (peso 5):
+   find(0)=0, find(3)=3 → distintos → UNIR
+   parent[0] = 3 → parent = [3, 1, 3, 3]
+   MST = {2-3, 0-3}               costo = 9
+
+3. Arista 0-2 (peso 6):
+   find(0)=3, find(2)=3 → ¡MISMA RAÍZ!
+   → DESCARTADA: formaría el ciclo 0-3-2-0
+
+4. Arista 0-1 (peso 10):
+   find(0)=3, find(1)=1 → distintos → UNIR
+   parent[3] = 1 → parent = [3, 1, 3, 1]
+   MST = {2-3, 0-3, 0-1}          costo = 19
+
+MST completo: |MST| = 3 = V-1 → PARAR
+(la arista 1-3 de peso 15 ni se evalúa)
+                        </div>
+                        <p class="mt-1"><strong>Costo total del MST = 19</strong> · Aristas: {2-3, 0-3, 0-1} · parent final = [3, 1, 3, 1]</p>
+                        <p style="color: var(--accent-3); margin-top: 0.5em;">💡 Aquí se ve el papel de Union-Find: en el paso 3, <code>find(0) == find(2)</code> detecta el ciclo en tiempo casi O(1), sin recorrer el grafo.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="cm">// Kruskal = ordenar + union-find</span>
+Collections.<span class="fn">sort</span>(edges); <span class="cm">// por peso ascendente</span>
+UnionFind uf = <span class="kw">new</span> UnionFind(V);
+
+<span class="kw">for</span> (Edge e : edges) {
+    <span class="cm">// union() devuelve false si find(u)==find(v) → ciclo</span>
+    <span class="kw">if</span> (uf.<span class="fn">union</span>(e.u, e.v)) {
+        mst.add(e);
+        costoTotal += e.weight;
+        <span class="kw">if</span> (mst.size() == V - <span class="nb">1</span>) <span class="kw">break</span>;
+    }
+}
+<span class="cm">// MST = {2-3, 0-3, 0-1}, costo 19</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2080,6 +2697,7 @@ Método 2: Ejecutar Floyd-Warshall una vez
                         <li>Floyd-Warshall: todos los pares, O(V³)</li>
                         <li>Ciclos: DFS 3 colores · ciclos negativos: iteración extra</li>
                         <li>Kahn: orden topológico · Kruskal/Prim: MST</li>
+                        <li>Union-Find (DSU): union naive vs union by rank</li>
                     </ul>
                 </div>
                 <div class="glass-card" style="text-align: left;">
@@ -2177,6 +2795,26 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize
 goToSlide(0);
+
+// ============================================================
+// LIMPIEZA DE BLOQUES DE CÓDIGO
+// ============================================================
+// Con white-space: pre, la indentación del propio HTML (los saltos
+// de línea alrededor de la etiqueta <span class="code-label"> y el
+// cierre del div) aparecería como líneas en blanco. Aquí se recortan.
+document.querySelectorAll('.code-block, .pseudo-code').forEach(b => {
+    // Quitar nodos de texto SOLO-espacios al inicio del bloque
+    while (b.firstChild && b.firstChild.nodeType === 3 && !b.firstChild.textContent.trim()) {
+        b.removeChild(b.firstChild);
+    }
+    // Quitar el salto de línea inicial del primer texto (tras el label si existe)
+    let n = b.firstChild;
+    if (n && n.nodeType === 1 && n.classList.contains('code-label')) n = n.nextSibling;
+    if (n && n.nodeType === 3) n.textContent = n.textContent.replace(/^\n+/, '');
+    // Recortar espacios/saltos finales (indentación del </div> de cierre)
+    const last = b.lastChild;
+    if (last && last.nodeType === 3) last.textContent = last.textContent.replace(/\s+$/, '');
+});
 
 // ============================================================
 // SOLUTION REVEAL
@@ -2842,6 +3480,311 @@ primAnimator.animSteps = [
 function startPrim() { primAnimator.runAnimation(document.getElementById('primStatus')); }
 function pausePrim() { primAnimator.pause(); document.getElementById('primStatus').textContent = '⏸ Pausado'; }
 function resetPrim() { primAnimator.reset(); document.getElementById('primStatus').textContent = 'Listo'; }
+
+// ============================================================
+// UNION-FIND ANIMATION (Union Naive vs Union by Rank)
+// ============================================================
+// A diferencia de GraphAnimator (grafo fijo), aquí la ESTRUCTURA
+// cambia en cada paso: se dibuja el bosque de árboles calculado
+// desde el arreglo parent[] de cada frame, más el propio arreglo
+// parent[] (y rank[]) como cajas en la parte inferior del canvas.
+class UnionFindAnimator {
+    constructor(canvasId, n, useRank) {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) {
+            console.warn('UnionFindAnimator: no existe el canvas "' + canvasId + '"');
+            this.frames = [];
+            return;
+        }
+        this.ctx = this.canvas.getContext('2d');
+        this.n = n;
+        this.useRank = useRank;
+        this.nodeRadius = 15;
+
+        // High-DPI (igual que GraphAnimator)
+        const dpr = window.devicePixelRatio || 1;
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
+        this.ctx.scale(dpr, dpr);
+        this.displayWidth = rect.width;
+        this.displayHeight = rect.height;
+
+        this.frames = this.buildFrames();
+        this.frameIndex = 0;
+        this.running = false;
+        this.paused = false;
+        this.timer = null;
+        this.speed = 1500;
+        this.reset();
+    }
+
+    // Simula las operaciones y genera un frame por cada sub-paso:
+    // (1) buscar raíces (resalta los caminos de find), (2) unir,
+    // y al final una demo de find() con path compression.
+    buildFrames() {
+        const n = this.n;
+        const parent = [];
+        const rank = [];
+        for (let i = 0; i < n; i++) { parent[i] = i; rank[i] = 0; }
+        const frames = [];
+        const snap = (msg, hl, delay) => frames.push({
+            parent: parent.slice(),
+            rank: this.useRank ? rank.slice() : null,
+            hl: hl || {},          // {nodes: [...], edges: [[hijo, padre], ...]}
+            message: msg,
+            delay: delay
+        });
+
+        // Camino de x hasta su raíz SIN comprimir: [x, parent[x], ..., raíz]
+        const path = (x) => {
+            const p = [x];
+            while (parent[x] !== x) { x = parent[x]; p.push(x); }
+            return p;
+        };
+        const pathEdges = (p) => {
+            const e = [];
+            for (let i = 0; i + 1 < p.length; i++) e.push([p[i], p[i + 1]]);
+            return e;
+        };
+
+        snap('Estado inicial: cada elemento es su propia raíz');
+
+        const ops = [[1, 0], [3, 2], [5, 4], [3, 0], [5, 0]];
+        for (const [x, y] of ops) {
+            const px = path(x), py = path(y);
+            const rx = px[px.length - 1], ry = py[py.length - 1];
+            snap(`union(${x}, ${y}): find(${x})=${rx}, find(${y})=${ry}`,
+                 { nodes: px.concat(py), edges: pathEdges(px).concat(pathEdges(py)) });
+
+            if (rx === ry) {
+                snap(`union(${x}, ${y}): misma raíz → ¡ciclo! No se une nada`);
+                continue;
+            }
+            if (!this.useRank) {
+                // NAIVE: la raíz de x siempre se cuelga de la raíz de y
+                parent[rx] = ry;
+                snap(`Naive: raíz ${rx} se cuelga de raíz ${ry} → parent[${rx}] = ${ry}`,
+                     { nodes: [rx, ry], edges: [[rx, ry]] });
+            } else if (rank[rx] < rank[ry]) {
+                parent[rx] = ry;
+                snap(`rank[${rx}]=${rank[rx]} < rank[${ry}]=${rank[ry]} → el árbol BAJO (${rx}) se cuelga del ALTO (${ry})`,
+                     { nodes: [rx, ry], edges: [[rx, ry]] });
+            } else if (rank[rx] > rank[ry]) {
+                parent[ry] = rx;
+                snap(`rank[${rx}]=${rank[rx]} > rank[${ry}]=${rank[ry]} → el árbol BAJO (${ry}) se cuelga del ALTO (${rx})`,
+                     { nodes: [rx, ry], edges: [[ry, rx]] });
+            } else {
+                const r = rank[rx];
+                parent[ry] = rx;
+                rank[rx]++;
+                snap(`Mismo rank (${r}): ${ry} se cuelga de ${rx} y rank[${rx}] sube a ${rank[rx]}`,
+                     { nodes: [rx, ry], edges: [[ry, rx]] });
+            }
+        }
+
+        // Demo final: find() sobre el nodo MÁS PROFUNDO + path compression
+        let deep = 0, maxD = -1;
+        for (let i = 0; i < n; i++) {
+            const d = path(i).length;
+            if (d > maxD) { maxD = d; deep = i; }
+        }
+        const pd = path(deep);
+        const root = pd[pd.length - 1];
+        snap(`find(${deep}) sin compresión: recorre ${pd.join(' → ')} (${pd.length - 1} saltos)`,
+             { nodes: pd, edges: pathEdges(pd) }, 2200);
+        for (const v of pd) parent[v] = root;   // path compression
+        snap(`⚡ Path compression: todo el camino se cuelga directo de la raíz ${root}. El próximo find(${deep}) será 1 salto`,
+             { nodes: pd.filter(v => v !== root).map(v => v), edges: pd.filter(v => v !== root).map(v => [v, root]) }, 2400);
+        snap(this.useRank
+            ? '✓ Union by Rank: árbol plano GARANTIZADO (altura ≤ log n) · con PC: O(α(n)) ≈ O(1)'
+            : '✓ Union Naive: funcionó, pero pudo degenerar en cadena O(n). Compara con Union by Rank →');
+        return frames;
+    }
+
+    // Calcula posiciones (x, y) del bosque a partir de parent[]:
+    // las raíces se reparten a lo ancho y cada subárbol se centra
+    // sobre sus hijos, nivel por nivel hacia abajo.
+    layout(parent) {
+        const n = this.n;
+        const children = [];
+        const roots = [];
+        for (let i = 0; i < n; i++) children.push([]);
+        for (let i = 0; i < n; i++) {
+            if (parent[i] === i) roots.push(i);
+            else children[parent[i]].push(i);
+        }
+        // Ancho en "hojas" de cada subárbol (para repartir espacio)
+        const width = (v) => children[v].length === 0 ? 1
+            : children[v].map(width).reduce((a, b) => a + b, 0);
+
+        const totalW = roots.map(width).reduce((a, b) => a + b, 0);
+        const slotW = (this.displayWidth - 30) / totalW;
+        const pos = {};
+        const place = (v, x0, depth) => {
+            const w = width(v);
+            pos[v] = { x: x0 + (w * slotW) / 2, y: 34 + depth * 58 };
+            let cx = x0;
+            for (const c of children[v]) {
+                place(c, cx, depth + 1);
+                cx += width(c) * slotW;
+            }
+        };
+        let x = 15;
+        for (const r of roots) {
+            place(r, x, 0);
+            x += width(r) * slotW;
+        }
+        return pos;
+    }
+
+    drawFrame(frame) {
+        const ctx = this.ctx;
+        const w = this.displayWidth;
+        const h = this.displayHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        const pos = this.layout(frame.parent);
+        const hlNodes = new Set((frame.hl.nodes || []));
+        const hlEdges = new Set((frame.hl.edges || []).map(e => e[0] + '-' + e[1]));
+
+        // Aristas hijo → padre (flecha hacia el padre, como parent[])
+        for (let i = 0; i < this.n; i++) {
+            const p = frame.parent[i];
+            if (p === i) continue;
+            const a = pos[i], b = pos[p];
+            const hl = hlEdges.has(i + '-' + p);
+            const dx = b.x - a.x, dy = b.y - a.y;
+            const len = Math.sqrt(dx * dx + dy * dy);
+            const nx = dx / len, ny = dy / len;
+            const sx = a.x + nx * this.nodeRadius, sy = a.y + ny * this.nodeRadius;
+            const ex = b.x - nx * this.nodeRadius, ey = b.y - ny * this.nodeRadius;
+            ctx.beginPath();
+            ctx.strokeStyle = hl ? COLORS.highlight : COLORS.edge;
+            ctx.lineWidth = hl ? 2.5 : 1.5;
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(ex, ey);
+            ctx.stroke();
+            // Punta de flecha apuntando al padre
+            const ang = Math.atan2(ey - sy, ex - sx);
+            ctx.beginPath();
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.moveTo(ex, ey);
+            ctx.lineTo(ex - 8 * Math.cos(ang - Math.PI / 6), ey - 8 * Math.sin(ang - Math.PI / 6));
+            ctx.lineTo(ex - 8 * Math.cos(ang + Math.PI / 6), ey - 8 * Math.sin(ang + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Nodos (raíz = verde, resaltado = turquesa, normal = morado)
+        for (let i = 0; i < this.n; i++) {
+            const { x, y } = pos[i];
+            const isRoot = frame.parent[i] === i;
+            const hl = hlNodes.has(i);
+            ctx.beginPath();
+            ctx.arc(x, y, this.nodeRadius, 0, Math.PI * 2);
+            ctx.fillStyle = hl ? COLORS.visiting : isRoot ? COLORS.finished : COLORS.node;
+            ctx.strokeStyle = hl ? '#00f5f0' : isRoot ? '#2ecc71' : COLORS.nodeBorder;
+            ctx.lineWidth = 2;
+            ctx.fill();
+            ctx.stroke();
+            ctx.font = '700 12px "Inter", sans-serif';
+            ctx.fillStyle = (isRoot && !hl) ? '#1a1a2e' : COLORS.nodeText;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(String(i), x, y);
+            // Rank junto a las raíces (solo en la versión rank)
+            if (frame.rank && isRoot) {
+                ctx.font = '600 9px "JetBrains Mono", monospace';
+                ctx.fillStyle = COLORS.queue;
+                ctx.fillText('r=' + frame.rank[i], x, y - this.nodeRadius - 9);
+            }
+        }
+
+        // Arreglos parent[] / rank[] como cajas en la parte inferior
+        const rows = frame.rank ? [['parent', frame.parent], ['rank', frame.rank]] : [['parent', frame.parent]];
+        const boxW = 30, boxH = 22;
+        const baseY = h - rows.length * (boxH + 6) - 8;
+        const baseX = (w - (this.n * boxW + 52)) / 2 + 52;
+        rows.forEach(([label, arr], r) => {
+            const y = baseY + r * (boxH + 6);
+            ctx.font = '600 10px "JetBrains Mono", monospace';
+            ctx.fillStyle = COLORS.edgeText;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label, baseX - 8, y + boxH / 2);
+            for (let i = 0; i < this.n; i++) {
+                const x = baseX + i * boxW;
+                const changed = label === 'parent' && hlNodes.has(i);
+                ctx.fillStyle = changed ? 'rgba(0, 206, 201, 0.25)' : 'rgba(255,255,255,0.05)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                ctx.lineWidth = 1;
+                ctx.fillRect(x, y, boxW - 3, boxH);
+                ctx.strokeRect(x, y, boxW - 3, boxH);
+                ctx.font = '600 11px "JetBrains Mono", monospace';
+                ctx.fillStyle = changed ? COLORS.visiting : COLORS.nodeText;
+                ctx.textAlign = 'center';
+                ctx.fillText(String(arr[i]), x + (boxW - 3) / 2, y + boxH / 2);
+                if (r === 0) {   // índices arriba de la primera fila
+                    ctx.font = '500 8px "JetBrains Mono", monospace';
+                    ctx.fillStyle = COLORS.edgeText;
+                    ctx.fillText(String(i), x + (boxW - 3) / 2, y - 7);
+                }
+            }
+        });
+    }
+
+    reset() {
+        if (!this.ctx) return;
+        this.frameIndex = 0;
+        this.running = false;
+        this.paused = false;
+        if (this.timer) clearTimeout(this.timer);
+        this.drawFrame(this.frames[0]);
+    }
+
+    runAnimation(statusEl) {
+        if (!this.ctx) return;
+        if (this.running && !this.paused) return;
+        if (this.paused) {
+            this.paused = false;
+            this._next(statusEl);
+            return;
+        }
+        this.reset();
+        this.running = true;
+        this._next(statusEl);
+    }
+
+    _next(statusEl) {
+        if (this.frameIndex >= this.frames.length) {
+            this.running = false;
+            return;
+        }
+        if (this.paused) return;
+        const frame = this.frames[this.frameIndex];
+        this.frameIndex++;
+        this.drawFrame(frame);
+        if (statusEl && frame.message) statusEl.textContent = frame.message;
+        this.timer = setTimeout(() => this._next(statusEl), frame.delay || this.speed);
+    }
+
+    pause() {
+        this.paused = true;
+        if (this.timer) clearTimeout(this.timer);
+    }
+}
+
+const ufNaiveAnimator = new UnionFindAnimator('ufNaiveCanvas', 6, false);
+const ufRankAnimator = new UnionFindAnimator('ufRankCanvas', 6, true);
+
+function startUFNaive() { ufNaiveAnimator.runAnimation(document.getElementById('ufNaiveStatus')); }
+function pauseUFNaive() { ufNaiveAnimator.pause(); document.getElementById('ufNaiveStatus').textContent = '⏸ Pausado'; }
+function resetUFNaive() { ufNaiveAnimator.reset(); document.getElementById('ufNaiveStatus').textContent = 'Listo'; }
+
+function startUFRank() { ufRankAnimator.runAnimation(document.getElementById('ufRankStatus')); }
+function pauseUFRank() { ufRankAnimator.pause(); document.getElementById('ufRankStatus').textContent = '⏸ Pausado'; }
+function resetUFRank() { ufRankAnimator.reset(); document.getElementById('ufRankStatus').textContent = 'Listo'; }
 </script>
 </body>
 </html>

@@ -1,0 +1,23 @@
+# Clases compiladas de Java
+*.class
+
+# Logs
+*.log
+
+# Archivos de empaquetado
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Archivos temporales de IDEs y editores
+.idea/
+.vscode/
+*.iml
+*.swp
+*~
+.DS_Store
+Thumbs.db

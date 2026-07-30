@@ -16,6 +16,7 @@
 # Archivos temporales de IDEs y editores
 .idea/
 .vscode/
+.claude/
 *.iml
 *.swp
 *~

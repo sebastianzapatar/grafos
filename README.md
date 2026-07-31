@@ -35,13 +35,32 @@ Se han implementado y documentado exhaustivamente los siguientes algoritmos:
 
 > 💡 **Nota:** Cada archivo `.java` contiene su propio método `main` con un ejemplo práctico para que puedas compilar y ejecutar el algoritmo de forma independiente.
 
-### 2. Presentación Interactiva (HTML)
+### 2. Ejercicios resueltos
+
+- **[Soluciones.java](Soluciones.java)**: ejercicios 1–11 (los de la presentación: trazas a mano de BFS, DFS, Dijkstra, Bellman-Ford, Floyd-Warshall, orden topológico, Union-Find y Kruskal).
+- **[SolucionesExtra.java](SolucionesExtra.java)**: ejercicios 12–29, variantes de DFS, BFS y Dijkstra (enunciados en [EJERCICIOS_EXTRA.md](EJERCICIOS_EXTRA.md)).
+- **[SolucionesJueces.java](SolucionesJueces.java)**: ejercicios 30–35, **problemas reales de jueces online** resueltos con BFS y DFS. Cada solución se ejecuta contra el caso de ejemplo oficial del enunciado y se compara con la salida esperada:
+
+| # | Problema | Juez | Algoritmo | Idea clave |
+|---|----------|------|-----------|------------|
+| 30 | [Counting Rooms](https://cses.fi/problemset/task/1192) | CSES 1192 | DFS | La grilla es un grafo: contar componentes conexas (con pila explícita, no recursión) |
+| 31 | [Labyrinth](https://cses.fi/problemset/task/1193) | CSES 1193 | BFS | Camino mínimo + reconstrucción de la ruta con `padre[]` |
+| 32 | [Cyclic Components](https://codeforces.com/problemset/problem/977/E) | Codeforces 977E | DFS | Una componente es un ciclo ⟺ todos sus vértices tienen grado 2 |
+| 33 | [Two Buttons](https://codeforces.com/problemset/problem/520/B) | Codeforces 520B | BFS | El grafo no está dado: nodo = número en pantalla, arista = pulsación |
+| 34 | [BFS: Shortest Reach](https://www.hackerrank.com/challenges/bfsshortreach/problem) | HackerRank | BFS | Peso uniforme (6) ⇒ basta BFS, no hace falta Dijkstra |
+| 35 | [Roads and Libraries](https://www.hackerrank.com/challenges/torque-and-development/problem) | HackerRank | DFS | Contar componentes conexas + decisión de costo (¡usar `long`!) |
+
+```bash
+javac SolucionesJueces.java && java SolucionesJueces
+```
+
+### 3. Presentación Interactiva (HTML)
 
 - **[index.html](index.html)**: Es una presentación standalone (sin dependencias externas) diseñada con una estética *premium* y moderna.
 
 **Características de la presentación:**
 - 🎬 **Animaciones Interactivas:** Visualizaciones paso a paso (en *Canvas*) para ver cómo se ejecuta cada algoritmo gráficamente.
-- 🧩 **Ejercicios y Desafíos:** 8 problemas de diferentes niveles de dificultad, con botones para revelar la solución paso a paso.
+- 🧩 **Ejercicios y Desafíos:** 17 problemas de diferentes niveles de dificultad (11 de traza a mano + 6 de jueces online), con botones para revelar la solución paso a paso.
 - ⌨️ **Navegación Intuitiva:** Se puede navegar usando las flechas del teclado (`←` y `→`).
 - 📊 **Comparativas:** Tablas para entender cuándo usar cada algoritmo.
 

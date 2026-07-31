@@ -1,11 +1,11 @@
-package algoritmos;
+
 
 import java.util.*;
 
-public class BFS {
+public class BFS2 {
     private int V;
     private List<List<Integer>> adj = new ArrayList<>();
-    public BFS(int V) {
+    public BFS2(int V) {
         this.V = V;
         for (int i = 0; i < V; i++) {
             adj.add(new ArrayList<>());
@@ -108,7 +108,7 @@ public class BFS {
     }
 
     static void main() {
-        BFS g=new BFS(6);
+        BFS2 g=new BFS2(6);
         g.addEdge(0, 1);
         g.addEdge(0, 2);
         g.addEdge(1, 3);

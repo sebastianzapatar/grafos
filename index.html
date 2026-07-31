@@ -463,9 +463,45 @@
         }
 
         .solution.revealed {
-            max-height: 2000px;
+            max-height: 4500px;
             opacity: 1;
             margin-top: 1.2em;
+        }
+
+        /* Cabecera de los ejercicios tomados de jueces online */
+        .problem-source {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.9em;
+        }
+
+        .judge-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .judge-badge.cses { background: rgba(85, 239, 196, 0.15); color: var(--accent-6); }
+        .judge-badge.cf   { background: rgba(116, 185, 255, 0.15); color: #74b9ff; }
+        .judge-badge.hr   { background: rgba(0, 206, 201, 0.15); color: var(--accent-3); }
+
+        .problem-link {
+            color: var(--accent-2);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            border-bottom: 1px dashed rgba(162, 155, 254, 0.4);
+            transition: var(--transition);
+        }
+
+        .problem-link:hover {
+            color: var(--accent-3);
+            border-bottom-color: var(--accent-3);
         }
 
         .solution-inner {
@@ -831,7 +867,7 @@
             </div>
             <div class="hero-meta" style="justify-content: center; margin-top: 2em;">
                 <span>📚 10 Algoritmos</span>
-                <span>🧩 11 Ejercicios</span>
+                <span>🧩 17 Ejercicios</span>
                 <span>🎬 Animaciones Interactivas</span>
             </div>
         </div>
@@ -2653,6 +2689,554 @@ UnionFind uf = <span class="kw">new</span> UnionFind(V);
         </div>
     </div>
 
+    <!-- ===================== SLIDE: JUECES ONLINE (PORTADA) ===================== -->
+    <div class="slide" id="slide-jueces">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-2">Ejercicios de Jueces Online</h2>
+            <p class="slide-subtitle">Los mismos BFS y DFS, ahora en problemas reales de competencia</p>
+
+            <p class="mt-1">Hasta aquí los ejercicios eran trazas a mano. Estos seis son <strong>problemas reales</strong> de CSES, Codeforces y HackerRank: se envían al juez, se compilan y se prueban contra cientos de casos. Todos se resuelven <strong>solo</strong> con BFS o DFS — lo difícil no es el algoritmo, es <em>ver el grafo</em>.</p>
+
+            <table class="compare-table mt-2">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Problema</th>
+                        <th>Juez</th>
+                        <th>Algoritmo</th>
+                        <th>Idea clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>30</td>
+                        <td>Counting Rooms</td>
+                        <td><span class="judge-badge cses">CSES 1192</span></td>
+                        <td><span class="badge purple">DFS</span></td>
+                        <td>La grilla es un grafo: contar componentes conexas</td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td>Labyrinth</td>
+                        <td><span class="judge-badge cses">CSES 1193</span></td>
+                        <td><span class="badge green">BFS</span></td>
+                        <td>Camino mínimo + reconstruir la ruta con <code>padre[]</code></td>
+                    </tr>
+                    <tr>
+                        <td>32</td>
+                        <td>Cyclic Components</td>
+                        <td><span class="judge-badge cf">CF 977E · 1500</span></td>
+                        <td><span class="badge purple">DFS</span></td>
+                        <td>Componente = ciclo ⟺ todos sus grados valen 2</td>
+                    </tr>
+                    <tr>
+                        <td>33</td>
+                        <td>Two Buttons</td>
+                        <td><span class="judge-badge cf">CF 520B · 1400</span></td>
+                        <td><span class="badge green">BFS</span></td>
+                        <td>El grafo no está dado: nodo = número en pantalla</td>
+                    </tr>
+                    <tr>
+                        <td>34</td>
+                        <td>BFS: Shortest Reach</td>
+                        <td><span class="judge-badge hr">HackerRank</span></td>
+                        <td><span class="badge green">BFS</span></td>
+                        <td>Peso uniforme (6) ⇒ BFS, no hace falta Dijkstra</td>
+                    </tr>
+                    <tr>
+                        <td>35</td>
+                        <td>Roads and Libraries</td>
+                        <td><span class="judge-badge hr">HackerRank</span></td>
+                        <td><span class="badge purple">DFS</span></td>
+                        <td>Componentes conexas + decisión de costo</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="mt-2" style="color: var(--accent-3);">💡 Los seis están resueltos, comentados y verificados contra los casos de ejemplo oficiales en <code>SolucionesJueces.java</code> (la numeración 30–35 continúa la de <code>SolucionesExtra.java</code>).</p>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 30 — CSES COUNTING ROOMS ===================== -->
+    <div class="slide" id="slide-ej30">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-2">Ejercicio 30 — Counting Rooms</h2>
+            <div class="exercise-card">
+                <div class="problem-source">
+                    <span class="judge-badge cses">CSES · Graph Algorithms</span>
+                    <a class="problem-link" href="https://cses.fi/problemset/task/1192" target="_blank" rel="noopener">cses.fi/problemset/task/1192</a>
+                    <span class="badge purple">DFS</span>
+                </div>
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star empty">★</span><span class="star empty">★</span>
+                </div>
+                <h3>¿Cuántas habitaciones tiene el edificio?</h3>
+                <p>Se da el mapa de un edificio como una grilla de <strong>n × m</strong>, donde cada casilla es piso (<code>.</code>) o pared (<code>#</code>). Se puede caminar entre casillas de piso moviéndose arriba, abajo, izquierda o derecha. <strong>Contar el número de habitaciones.</strong></p>
+                <div class="code-block mt-1" style="max-height: none;">
+Entrada:  n y m (1 ≤ n, m ≤ 1000), luego n líneas de m caracteres
+Salida:   un entero — el número de habitaciones
+
+Ejemplo de entrada          Salida
+5 8                         3
+########
+#..#...#
+####.#.#
+#..#...#
+########
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿Dónde está el grafo? ¿Y por qué una solución recursiva en Java revienta con n = m = 1000?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol30')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol30">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>El grafo es implícito:</strong> cada casilla de piso es un <em>nodo</em> y hay una <em>arista</em> entre casillas de piso adyacentes. Nunca se construye la lista de adyacencia: los vecinos se calculan con <code>(i±1, j)</code> y <code>(i, j±1)</code>.</p>
+                        <p class="mt-1">Con esa lectura el problema es literalmente el <strong>Ejercicio 2</strong>: contar componentes conexas. Se recorren todas las casillas y, al encontrar piso sin visitar, se lanza un <em>flood fill</em> que marca toda su componente y se suma 1 al contador.</p>
+                        <p class="mt-1"><strong>⚠️ La trampa de Java:</strong> con 1000×1000 = 10<sup>6</sup> casillas, una habitación en zigzag da una recursión de profundidad 10<sup>6</sup> → <code>StackOverflowError</code>. Solución: DFS con <strong>pila explícita</strong> (o BFS con cola: da igual el orden, solo hay que tocar toda la componente).</p>
+                        <p class="mt-1"><strong>Complejidad:</strong> O(n·m) en tiempo y memoria — cada casilla se visita una sola vez. Respuesta del ejemplo: <strong>3</strong>.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public static int</span> <span class="fn">contarHabitaciones</span>(<span class="tp">char</span>[][] g) {
+    <span class="tp">int</span> n = g.length, m = g[<span class="nb">0</span>].length;
+    <span class="tp">boolean</span>[][] visitado = <span class="kw">new</span> <span class="tp">boolean</span>[n][m];
+    <span class="tp">int</span>[] di = {<span class="nb">1</span>, -<span class="nb">1</span>, <span class="nb">0</span>, <span class="nb">0</span>}, dj = {<span class="nb">0</span>, <span class="nb">0</span>, <span class="nb">1</span>, -<span class="nb">1</span>};
+    <span class="tp">int</span> habitaciones = <span class="nb">0</span>;
+    Deque&lt;<span class="tp">int</span>[]&gt; pila = <span class="kw">new</span> ArrayDeque&lt;&gt;();  <span class="cm">// pila EXPLÍCITA</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nb">0</span>; i &lt; n; i++) {
+      <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nb">0</span>; j &lt; m; j++) {
+        <span class="kw">if</span> (g[i][j] == <span class="st">'#'</span> || visitado[i][j]) <span class="kw">continue</span>;
+
+        habitaciones++;                 <span class="cm">// componente nueva</span>
+        visitado[i][j] = <span class="kw">true</span>;
+        pila.push(<span class="kw">new</span> <span class="tp">int</span>[]{i, j});
+
+        <span class="kw">while</span> (!pila.isEmpty()) {       <span class="cm">// flood fill</span>
+            <span class="tp">int</span>[] actual = pila.pop();
+            <span class="kw">for</span> (<span class="tp">int</span> d = <span class="nb">0</span>; d &lt; <span class="nb">4</span>; d++) {
+                <span class="tp">int</span> ni = actual[<span class="nb">0</span>] + di[d], nj = actual[<span class="nb">1</span>] + dj[d];
+                <span class="kw">if</span> (ni &lt; <span class="nb">0</span> || ni &gt;= n || nj &lt; <span class="nb">0</span> || nj &gt;= m) <span class="kw">continue</span>;
+                <span class="kw">if</span> (visitado[ni][nj] || g[ni][nj] == <span class="st">'#'</span>) <span class="kw">continue</span>;
+                visitado[ni][nj] = <span class="kw">true</span>;   <span class="cm">// marcar AL APILAR</span>
+                pila.push(<span class="kw">new</span> <span class="tp">int</span>[]{ni, nj});
+            }
+        }
+      }
+    }
+    <span class="kw">return</span> habitaciones;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 31 — CSES LABYRINTH ===================== -->
+    <div class="slide" id="slide-ej31">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-2">Ejercicio 31 — Labyrinth</h2>
+            <div class="exercise-card">
+                <div class="problem-source">
+                    <span class="judge-badge cses">CSES · Graph Algorithms</span>
+                    <a class="problem-link" href="https://cses.fi/problemset/task/1193" target="_blank" rel="noopener">cses.fi/problemset/task/1193</a>
+                    <span class="badge green">BFS</span>
+                </div>
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Salir del laberinto por el camino más corto</h3>
+                <p>Grilla de <strong>n × m</strong> con paredes (<code>#</code>), piso (<code>.</code>), inicio (<code>A</code>) y salida (<code>B</code>). Hay que decir si existe camino de A a B y, si existe, imprimir <strong>su longitud mínima y la secuencia de movimientos</strong> (L, R, U, D).</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Entrada:  n y m (1 ≤ n, m ≤ 1000) y la grilla
+Salida:   "NO", o bien "YES", la longitud y los movimientos
+
+Ejemplo de entrada          Salida
+5 8                         YES
+########                    9
+#.A#...#                    LDDRRRRRU
+#.##.#B#
+#......#
+########
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿Por qué aquí <em>no</em> sirve DFS? ¿Y cómo se recuperan los movimientos si BFS solo guarda distancias?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol31')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol31">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>Por qué BFS y no DFS:</strong> cada movimiento cuesta 1, o sea el grafo es <em>no ponderado</em>. BFS explora por capas, así que la primera vez que toca <code>B</code> lo hace por un camino de longitud mínima. DFS encuentra <em>un</em> camino, pero puede dar un rodeo enorme.</p>
+                        <p class="mt-1"><strong>Reconstrucción del camino</strong> (la parte nueva): al visitar una celda <code>v</code> desde <code>u</code> se guardan dos cosas — <code>padre[v] = u</code> y <code>movimiento[v] = 'L'/'R'/'U'/'D'</code>. Al terminar se sube desde B siguiendo <code>padre[]</code> hasta A, se acumulan las letras y se <strong>invierte</strong> la cadena. Es el mismo truco de <code>prev[]</code> que se usó en Dijkstra (Ejercicio 7).</p>
+                        <ul class="mt-1">
+                            <li>Celda <code>(i, j)</code> → nodo <code>i*m + j</code>: así <code>padre[]</code> y <code>movimiento[]</code> son arreglos planos.</li>
+                            <li>Marcar visitado <strong>al encolar</strong>, no al desencolar: si no, una celda entra varias veces a la cola.</li>
+                            <li>El juez acepta <strong>cualquier</strong> camino de longitud mínima; la cadena exacta depende del orden de los vecinos.</li>
+                        </ul>
+                        <p class="mt-1"><strong>Complejidad:</strong> O(n·m). Respuesta del ejemplo: <strong>YES / 9 / LDDRRRRRU</strong>.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="tp">int</span>[] di = {<span class="nb">1</span>, -<span class="nb">1</span>, <span class="nb">0</span>, <span class="nb">0</span>}, dj = {<span class="nb">0</span>, <span class="nb">0</span>, <span class="nb">1</span>, -<span class="nb">1</span>};
+<span class="tp">char</span>[] letra = {<span class="st">'D'</span>, <span class="st">'U'</span>, <span class="st">'R'</span>, <span class="st">'L'</span>};   <span class="cm">// misma posición que di/dj</span>
+
+<span class="tp">int</span>[] padre = <span class="kw">new</span> <span class="tp">int</span>[n * m];        <span class="cm">// ¿de qué celda vengo?</span>
+<span class="tp">char</span>[] movimiento = <span class="kw">new</span> <span class="tp">char</span>[n * m]; <span class="cm">// ¿con qué letra llegué?</span>
+<span class="tp">boolean</span>[] visitado = <span class="kw">new</span> <span class="tp">boolean</span>[n * m];
+
+Queue&lt;Integer&gt; cola = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+visitado[inicio] = <span class="kw">true</span>;  cola.add(inicio);
+
+<span class="kw">while</span> (!cola.isEmpty()) {
+    <span class="tp">int</span> u = cola.poll();
+    <span class="kw">if</span> (u == fin) <span class="kw">break</span>;             <span class="cm">// ya es óptimo: BFS por capas</span>
+    <span class="tp">int</span> i = u / m, j = u % m;
+    <span class="kw">for</span> (<span class="tp">int</span> d = <span class="nb">0</span>; d &lt; <span class="nb">4</span>; d++) {
+        <span class="tp">int</span> ni = i + di[d], nj = j + dj[d];
+        <span class="kw">if</span> (ni &lt; <span class="nb">0</span> || ni &gt;= n || nj &lt; <span class="nb">0</span> || nj &gt;= m) <span class="kw">continue</span>;
+        <span class="kw">if</span> (g[ni][nj] == <span class="st">'#'</span>) <span class="kw">continue</span>;
+        <span class="tp">int</span> v = ni * m + nj;
+        <span class="kw">if</span> (visitado[v]) <span class="kw">continue</span>;
+        visitado[v] = <span class="kw">true</span>;
+        padre[v] = u;                  <span class="cm">// ← la clave de la reconstrucción</span>
+        movimiento[v] = letra[d];
+        cola.add(v);
+    }
+}
+
+<span class="kw">if</span> (!visitado[fin]) <span class="kw">return new</span> String[]{<span class="st">"NO"</span>};
+
+StringBuilder camino = <span class="kw">new</span> StringBuilder();
+<span class="kw">for</span> (<span class="tp">int</span> act = fin; act != inicio; act = padre[act])
+    camino.append(movimiento[act]);
+camino.reverse();                      <span class="cm">// se armó de B hacia A</span>
+<span class="kw">return new</span> String[]{<span class="st">"YES"</span>, <span class="st">""</span> + camino.length(), camino.toString()};
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 32 — CF 977E CYCLIC COMPONENTS ===================== -->
+    <div class="slide" id="slide-ej32">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-5">Ejercicio 32 — Cyclic Components</h2>
+            <div class="exercise-card">
+                <div class="problem-source">
+                    <span class="judge-badge cf">Codeforces 977E · rating 1500</span>
+                    <a class="problem-link" href="https://codeforces.com/problemset/problem/977/E" target="_blank" rel="noopener">codeforces.com/problemset/problem/977/E</a>
+                    <span class="badge purple">DFS</span>
+                </div>
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Contar las componentes conexas que son un ciclo</h3>
+                <p>Grafo <strong>no dirigido</strong> de n vértices y m aristas, sin bucles ni aristas repetidas. Una componente conexa <em>es un ciclo</em> si sus vértices se pueden ordenar v<sub>1</sub>—v<sub>2</sub>—…—v<sub>k</sub>—v<sub>1</sub> y <strong>no tiene ninguna arista más</strong> (por definición, k ≥ 3). Contar cuántas componentes son ciclos.</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Restricciones: 1 ≤ n ≤ 2·10⁵ , 0 ≤ m ≤ 2·10⁵
+
+Ejemplo de entrada          Salida
+5 4                         1
+1 2
+3 4                    Componentes: {1,2} y {3,4,5}
+5 4                    {3,4,5} es el triángulo 3-4-5-3  ✔
+3 5                    {1,2} es una arista suelta       ✘
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿hay que <em>encontrar</em> los ciclos con DFS y aristas de retroceso? ¿O hay una caracterización mucho más barata?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol32')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol32">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>No hay que buscar el ciclo.</strong> La observación que resuelve el problema:</p>
+                        <p class="mt-1" style="color: var(--accent-3); font-size: 1.05rem;">Una componente conexa es un ciclo simple <strong>⟺ todos sus vértices tienen grado exactamente 2</strong>.</p>
+                        <ul class="mt-1">
+                            <li>Si algún vértice tiene <strong>grado 1</strong> → hay una "cola" colgando, no es un ciclo.</li>
+                            <li>Si algún vértice tiene <strong>grado ≥ 3</strong> → hay una rama o una cuerda, tampoco.</li>
+                            <li>Si <em>todos</em> tienen grado 2 y la componente es conexa, entonces cada vértice tiene exactamente dos vecinos y la componente se cierra sobre sí misma: es un único ciclo.</li>
+                        </ul>
+                        <p class="mt-1"><strong>Algoritmo:</strong> se calculan los grados al leer las aristas, se recorre cada componente con DFS (pila explícita: n llega a 2·10<sup>5</sup>) y basta con que <em>un</em> vértice tenga grado ≠ 2 para descartarla.</p>
+                        <p class="mt-1"><strong>Complejidad:</strong> O(n + m). Respuestas de los ejemplos: <strong>1</strong> y <strong>2</strong>.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public static int</span> <span class="fn">componentesCiclo</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] aristas) {
+    List&lt;List&lt;Integer&gt;&gt; adj = <span class="fn">nuevaAdj</span>(n + <span class="nb">1</span>);   <span class="cm">// vértices 1..n</span>
+    <span class="tp">int</span>[] grado = <span class="kw">new</span> <span class="tp">int</span>[n + <span class="nb">1</span>];
+
+    <span class="kw">for</span> (<span class="tp">int</span>[] e : aristas) {
+        adj.get(e[<span class="nb">0</span>]).add(e[<span class="nb">1</span>]);
+        adj.get(e[<span class="nb">1</span>]).add(e[<span class="nb">0</span>]);
+        grado[e[<span class="nb">0</span>]]++;  grado[e[<span class="nb">1</span>]]++;   <span class="cm">// ← todo el problema vive aquí</span>
+    }
+
+    <span class="tp">boolean</span>[] visitado = <span class="kw">new</span> <span class="tp">boolean</span>[n + <span class="nb">1</span>];
+    <span class="tp">int</span> ciclos = <span class="nb">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> inicio = <span class="nb">1</span>; inicio &lt;= n; inicio++) {
+        <span class="kw">if</span> (visitado[inicio]) <span class="kw">continue</span>;
+
+        <span class="tp">boolean</span> esCiclo = <span class="kw">true</span>;             <span class="cm">// DFS de la componente</span>
+        Deque&lt;Integer&gt; pila = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+        visitado[inicio] = <span class="kw">true</span>;  pila.push(inicio);
+
+        <span class="kw">while</span> (!pila.isEmpty()) {
+            <span class="tp">int</span> u = pila.pop();
+            <span class="kw">if</span> (grado[u] != <span class="nb">2</span>) esCiclo = <span class="kw">false</span>;  <span class="cm">// basta UNO</span>
+            <span class="kw">for</span> (<span class="tp">int</span> v : adj.get(u)) {
+                <span class="kw">if</span> (!visitado[v]) { visitado[v] = <span class="kw">true</span>; pila.push(v); }
+            }
+        }
+        <span class="kw">if</span> (esCiclo) ciclos++;
+    }
+    <span class="kw">return</span> ciclos;
+}
+                        </div>
+                        <p class="mt-1" style="color: var(--text-muted);">Nota: <em>no</em> se puede parar el DFS apenas se ve un grado ≠ 2 — hay que terminar de marcar toda la componente para no contarla de nuevo desde otro vértice.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 33 — CF 520B TWO BUTTONS ===================== -->
+    <div class="slide" id="slide-ej33">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-5">Ejercicio 33 — Two Buttons</h2>
+            <div class="exercise-card">
+                <div class="problem-source">
+                    <span class="judge-badge cf">Codeforces 520B · rating 1400</span>
+                    <a class="problem-link" href="https://codeforces.com/problemset/problem/520/B" target="_blank" rel="noopener">codeforces.com/problemset/problem/520/B</a>
+                    <span class="badge green">BFS</span>
+                </div>
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Mínimo de pulsaciones para llegar de n a m</h3>
+                <p>Un aparato muestra el número <strong>n</strong>. El <span style="color:#fd79a8;">botón rojo</span> <strong>multiplica por 2</strong> y el <span style="color:#74b9ff;">botón azul</span> <strong>resta 1</strong>. Si el número deja de ser positivo el aparato se rompe. ¿Cuál es el <strong>mínimo número de pulsaciones</strong> para que la pantalla muestre <strong>m</strong>?</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Restricciones: 1 ≤ n, m ≤ 10⁴  (n ≠ m)
+
+Ejemplo 1        Ejemplo 2
+Entrada: 4 6     Entrada: 10 1
+Salida:  2       Salida:  9
+
+4 --azul--> 3 --rojo--> 6      10 -1 -1 ... -1 -> 1
+   (2 pulsaciones)                (9 pulsaciones)
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> aquí no hay ningún grafo en el enunciado… ¿y aun así es un problema de BFS? ¿Cuál es el nodo y cuál la arista? ¿Hasta qué número hay que explorar?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol33')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol33">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>Modelar el grafo</strong> — este es el aporte del ejercicio:</p>
+                        <ul class="mt-1">
+                            <li><strong>Nodo</strong> = el número que muestra la pantalla.</li>
+                            <li><strong>Arista</strong> = una pulsación: <code>x → 2x</code> (rojo) y <code>x → x−1</code> (azul).</li>
+                            <li>Toda arista cuesta <strong>1 pulsación</strong> ⇒ grafo no ponderado ⇒ <strong>BFS da el mínimo</strong>.</li>
+                        </ul>
+                        <p class="mt-1"><strong>Acotar el universo de estados:</strong> el grafo es infinito, así que hay que recortarlo. Pasarse de <strong>2m</strong> nunca ayuda: desde ahí solo se puede bajar de a 1, y llegar a m desde más allá de 2m cuesta más que no haber duplicado. Con la cota 2m el grafo tiene O(m) nodos.</p>
+                        <p class="mt-1"><strong>Complejidad:</strong> O(m) tiempo y memoria — con m ≤ 10<sup>4</sup> sobra. Respuestas: <strong>2</strong> y <strong>9</strong>.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java — BFS sobre estados</span>
+<span class="kw">public static int</span> <span class="fn">twoButtonsBfs</span>(<span class="tp">int</span> n, <span class="tp">int</span> m) {
+    <span class="tp">int</span> limite = Math.max(n, <span class="nb">2</span> * m);   <span class="cm">// pasarse de 2m no sirve</span>
+    <span class="tp">int</span>[] dist = <span class="kw">new</span> <span class="tp">int</span>[limite + <span class="nb">1</span>];
+    Arrays.fill(dist, -<span class="nb">1</span>);
+
+    Queue&lt;Integer&gt; cola = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+    dist[n] = <span class="nb">0</span>;  cola.add(n);
+
+    <span class="kw">while</span> (!cola.isEmpty()) {
+        <span class="tp">int</span> x = cola.poll();
+        <span class="kw">if</span> (x == m) <span class="kw">return</span> dist[x];
+
+        <span class="cm">// botón rojo: x → 2x</span>
+        <span class="kw">if</span> (<span class="nb">2L</span> * x &lt;= limite &amp;&amp; dist[<span class="nb">2</span> * x] == -<span class="nb">1</span>) {
+            dist[<span class="nb">2</span> * x] = dist[x] + <span class="nb">1</span>;  cola.add(<span class="nb">2</span> * x);
+        }
+        <span class="cm">// botón azul: x → x−1 (debe seguir siendo positivo)</span>
+        <span class="kw">if</span> (x - <span class="nb">1</span> &gt;= <span class="nb">1</span> &amp;&amp; dist[x - <span class="nb">1</span>] == -<span class="nb">1</span>) {
+            dist[x - <span class="nb">1</span>] = dist[x] + <span class="nb">1</span>;  cola.add(x - <span class="nb">1</span>);
+        }
+    }
+    <span class="kw">return</span> dist[m];
+}
+                        </div>
+                        <p class="mt-2"><strong>Bonus — la versión del editorial, O(log m):</strong> se va de <strong>m hacia n</strong> deshaciendo pulsaciones. Si m es impar la última tuvo que ser el botón azul; si es par, lo barato es deshacer la duplicación. Sirve para comparar "modelar y usar BFS" contra "pensar el problema al revés":</p>
+                        <div class="code-block mt-1"><span class="code-label">Java — greedy inverso</span>
+<span class="kw">public static int</span> <span class="fn">twoButtonsGreedy</span>(<span class="tp">int</span> n, <span class="tp">int</span> m) {
+    <span class="tp">int</span> pasos = <span class="nb">0</span>;
+    <span class="kw">while</span> (m &gt; n) {
+        <span class="kw">if</span> (m % <span class="nb">2</span> == <span class="nb">1</span>) m++;   <span class="cm">// deshacer un "restar 1"</span>
+        <span class="kw">else</span> m /= <span class="nb">2</span>;             <span class="cm">// deshacer un "multiplicar por 2"</span>
+        pasos++;
+    }
+    <span class="kw">return</span> pasos + (n - m);      <span class="cm">// abajo de n solo quedan restas</span>
+}
+<span class="cm">// Verificado: coincide con el BFS para todo 1 ≤ n, m ≤ 300</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 34 — HR SHORTEST REACH ===================== -->
+    <div class="slide" id="slide-ej34">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-3">Ejercicio 34 — BFS: Shortest Reach</h2>
+            <div class="exercise-card">
+                <div class="problem-source">
+                    <span class="judge-badge hr">HackerRank · Interview Kit</span>
+                    <a class="problem-link" href="https://www.hackerrank.com/challenges/bfsshortreach/problem" target="_blank" rel="noopener">hackerrank.com/challenges/bfsshortreach</a>
+                    <span class="badge green">BFS</span>
+                </div>
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star empty">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Distancias desde un nodo, con aristas de peso 6</h3>
+                <p>Grafo <strong>no dirigido</strong> donde <strong>cada arista pesa 6</strong> unidades y los nodos están numerados de 1 a n. Dado un nodo de inicio <strong>s</strong>, devolver la distancia mínima de s a cada uno de los otros n−1 nodos, en orden de número de nodo, usando <code>-1</code> para los nodos inalcanzables.</p>
+                <div class="code-block mt-1" style="max-height: none;">
+Restricciones: q ≤ 10 consultas, 2 ≤ n ≤ 1000
+
+Ejemplo de entrada     Salida          Explicación
+2                      6 6 -1          n=4, s=1: 1-2 y 1-3 a 6;
+4 2                    -1 6            el nodo 4 está aislado
+1 2
+1 3                                    n=3, s=2: el 1 es
+1                                      inalcanzable, el 3 está
+3 1                                    a una arista (6)
+2 3
+2
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> el grafo es <em>ponderado</em>… ¿toca Dijkstra? ¿Y qué detalle del formato de salida hace fallar el envío aunque el algoritmo esté bien?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol34')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol34">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>No hace falta Dijkstra.</strong> El grafo es ponderado, pero con <em>peso uniforme</em>: todas las aristas valen 6. Si un camino tiene k aristas, cuesta 6k, así que <strong>minimizar el costo es minimizar el número de aristas</strong> — exactamente lo que hace BFS. Se cuentan aristas y al final se multiplica por 6.</p>
+                        <p class="mt-1">Es la misma razón por la que BFS resuelve caminos mínimos en grafos no ponderados: el argumento no necesita que el peso sea 1, solo que sea <strong>el mismo en todas las aristas</strong>. Dijkstra daría el mismo resultado pero con un O(m log n) innecesario.</p>
+                        <ul class="mt-1">
+                            <li><strong>⚠️ Detalle del formato:</strong> el arreglo de salida tiene n−1 posiciones — <strong>hay que saltarse el nodo origen</strong>.</li>
+                            <li>Los nodos van de 1 a n: se reservan n+1 casillas y se ignora la 0.</li>
+                            <li><code>dist[] = -1</code> sirve a la vez como "no visitado" y como respuesta de inalcanzable.</li>
+                        </ul>
+                        <p class="mt-1"><strong>Complejidad:</strong> O(n + m) por consulta. Respuestas: <strong>6 6 -1</strong> y <strong>-1 6</strong>.</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public static int</span>[] <span class="fn">shortestReach</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] aristas, <span class="tp">int</span> s) {
+    <span class="kw">final int</span> PESO = <span class="nb">6</span>;
+    List&lt;List&lt;Integer&gt;&gt; adj = <span class="fn">nuevaAdj</span>(n + <span class="nb">1</span>);   <span class="cm">// nodos 1..n</span>
+    <span class="kw">for</span> (<span class="tp">int</span>[] e : aristas) {
+        adj.get(e[<span class="nb">0</span>]).add(e[<span class="nb">1</span>]);
+        adj.get(e[<span class="nb">1</span>]).add(e[<span class="nb">0</span>]);
+    }
+
+    <span class="tp">int</span>[] dist = <span class="kw">new</span> <span class="tp">int</span>[n + <span class="nb">1</span>];
+    Arrays.fill(dist, -<span class="nb">1</span>);          <span class="cm">// -1 = no visitado = inalcanzable</span>
+    Queue&lt;Integer&gt; cola = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+    dist[s] = <span class="nb">0</span>;  cola.add(s);
+
+    <span class="kw">while</span> (!cola.isEmpty()) {
+        <span class="tp">int</span> u = cola.poll();
+        <span class="kw">for</span> (<span class="tp">int</span> v : adj.get(u)) {
+            <span class="kw">if</span> (dist[v] == -<span class="nb">1</span>) {
+                dist[v] = dist[u] + <span class="nb">1</span>;   <span class="cm">// se cuentan ARISTAS, no peso</span>
+                cola.add(v);
+            }
+        }
+    }
+
+    <span class="tp">int</span>[] respuesta = <span class="kw">new</span> <span class="tp">int</span>[n - <span class="nb">1</span>];    <span class="cm">// ¡sin el origen!</span>
+    <span class="tp">int</span> k = <span class="nb">0</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> v = <span class="nb">1</span>; v &lt;= n; v++) {
+        <span class="kw">if</span> (v == s) <span class="kw">continue</span>;
+        respuesta[k++] = (dist[v] == -<span class="nb">1</span>) ? -<span class="nb">1</span> : dist[v] * PESO;
+    }
+    <span class="kw">return</span> respuesta;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SLIDE: EJERCICIO 35 — HR ROADS AND LIBRARIES ===================== -->
+    <div class="slide" id="slide-ej35">
+        <span class="slide-number-badge"></span>
+        <div class="slide-inner">
+            <h2 class="slide-title gradient-3">Ejercicio 35 — Roads and Libraries</h2>
+            <div class="exercise-card">
+                <div class="problem-source">
+                    <span class="judge-badge hr">HackerRank · Interview Kit</span>
+                    <a class="problem-link" href="https://www.hackerrank.com/challenges/torque-and-development/problem" target="_blank" rel="noopener">hackerrank.com/challenges/torque-and-development</a>
+                    <span class="badge purple">DFS</span>
+                </div>
+                <div class="difficulty">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star empty">★</span>
+                </div>
+                <h3>Costo mínimo para que todos tengan biblioteca</h3>
+                <p>HackerLand tiene <strong>n</strong> ciudades sin conexiones. Se puede construir una biblioteca en cualquier ciudad (costo <code>c_lib</code>) y carreteras bidireccionales entre los pares de ciudades de una lista dada (costo <code>c_road</code> cada una). Un ciudadano tiene acceso si su ciudad tiene biblioteca <em>o</em> puede llegar por carretera a una que la tenga. <strong>Hallar el costo mínimo total.</strong></p>
+                <div class="code-block mt-1" style="max-height: none;">
+Restricciones: n ≤ 10⁵, m ≤ 10⁵, costos ≤ 10⁵
+
+Consulta 1: n=3, c_lib=2, c_road=1     Consulta 2: n=6, c_lib=2, c_road=5
+carreteras: 1-2, 3-1, 2-3              carreteras: 1-3, 3-4, 2-4,
+Salida: 4                                          1-2, 2-3, 5-6
+                                       Salida: 12
+                </div>
+                <p class="mt-1"><strong>Pregunta:</strong> ¿hace falta un MST (Kruskal/Prim) para elegir las carreteras? ¿Y qué pasa con el tipo de dato de la respuesta?</p>
+                <button class="reveal-btn" onclick="toggleSolution('sol35')">🔍 Revelar Solución</button>
+                <div class="solution" id="sol35">
+                    <div class="solution-inner">
+                        <h4>✅ Solución</h4>
+                        <p><strong>Nada de MST.</strong> Todas las carreteras cuestan lo mismo, así que no hay que <em>elegir cuáles</em>: solo importa <strong>cuántas</strong>. Conectar una componente de k ciudades cuesta siempre k−1 carreteras (cualquier árbol de expansión sirve), y Kruskal solo aportaría un <code>sort</code> inútil.</p>
+                        <p class="mt-1"><strong>Dos casos:</strong></p>
+                        <ul class="mt-1">
+                            <li><strong>Si <code>c_lib ≤ c_road</code>:</strong> nunca conviene una carretera → una biblioteca por ciudad: <code>n · c_lib</code>.</li>
+                            <li><strong>Si <code>c_lib &gt; c_road</code>:</strong> conviene conectar. En cada componente conexa basta <strong>1 biblioteca</strong> y k−1 carreteras. Con <strong>C</strong> componentes y n ciudades en total:
+                                <br><code>costo = C · c_lib + (n − C) · c_road</code></li>
+                        </ul>
+                        <p class="mt-1">Las C componentes se cuentan con el mismo DFS del Ejercicio 2 / 30. <strong>El grafo solo se usa para contar componentes</strong> — la decisión es aritmética.</p>
+                        <p class="mt-1"><strong>⚠️ Desbordamiento:</strong> 10<sup>5</sup> ciudades × 10<sup>5</sup> de costo = 10<sup>10</sup>, que <strong>no cabe en un <code>int</code></strong>. Hay que usar <code>long</code>: es el error más frecuente en este problema.</p>
+                        <p class="mt-1"><strong>Verificación:</strong> consulta 1 → c_lib(2) &gt; c_road(1), 1 componente: 1·2 + (3−1)·1 = <strong>4</strong>. Consulta 2 → c_lib(2) ≤ c_road(5): 6·2 = <strong>12</strong>.</p>
+                        <p class="mt-1"><strong>Complejidad:</strong> O(n + m).</p>
+                        <div class="code-block mt-1"><span class="code-label">Java</span>
+<span class="kw">public static long</span> <span class="fn">roadsAndLibraries</span>(<span class="tp">int</span> n, <span class="tp">long</span> cLib,
+                                        <span class="tp">long</span> cRoad, <span class="tp">int</span>[][] ciudades) {
+    <span class="cm">// Caso 1: la biblioteca no cuesta más que la carretera</span>
+    <span class="kw">if</span> (cLib &lt;= cRoad) <span class="kw">return</span> (<span class="tp">long</span>) n * cLib;   <span class="cm">// ← el cast importa</span>
+
+    <span class="cm">// Caso 2: conviene conectar → contar componentes con DFS</span>
+    List&lt;List&lt;Integer&gt;&gt; adj = <span class="fn">nuevaAdj</span>(n + <span class="nb">1</span>);
+    <span class="kw">for</span> (<span class="tp">int</span>[] c : ciudades) {
+        adj.get(c[<span class="nb">0</span>]).add(c[<span class="nb">1</span>]);
+        adj.get(c[<span class="nb">1</span>]).add(c[<span class="nb">0</span>]);
+    }
+
+    <span class="tp">boolean</span>[] visitado = <span class="kw">new</span> <span class="tp">boolean</span>[n + <span class="nb">1</span>];
+    <span class="tp">long</span> componentes = <span class="nb">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> inicio = <span class="nb">1</span>; inicio &lt;= n; inicio++) {
+        <span class="kw">if</span> (visitado[inicio]) <span class="kw">continue</span>;
+        componentes++;
+        Deque&lt;Integer&gt; pila = <span class="kw">new</span> ArrayDeque&lt;&gt;();
+        visitado[inicio] = <span class="kw">true</span>;  pila.push(inicio);
+        <span class="kw">while</span> (!pila.isEmpty()) {
+            <span class="tp">int</span> u = pila.pop();
+            <span class="kw">for</span> (<span class="tp">int</span> v : adj.get(u)) {
+                <span class="kw">if</span> (!visitado[v]) { visitado[v] = <span class="kw">true</span>; pila.push(v); }
+            }
+        }
+    }
+    <span class="cm">// 1 biblioteca por componente + (n − C) carreteras</span>
+    <span class="kw">return</span> componentes * cLib + (n - componentes) * cRoad;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ===================== SLIDE 18: CIERRE ===================== -->
     <div class="slide" id="slide-18">
         <span class="slide-number-badge">18 / 18</span>
@@ -2719,6 +3303,7 @@ UnionFind uf = <span class="kw">new</span> UnionFind(V);
                         <li>Kruskal (1956) - "On the shortest spanning subtree...", AMS</li>
                         <li>Prim (1957) - "Shortest connection networks", Bell System Tech. J.</li>
                         <li>cp-algorithms.com - Ciclos negativos y Union-Find (DSU)</li>
+                        <li>Para practicar: <a class="problem-link" href="https://cses.fi/problemset/" target="_blank" rel="noopener">CSES Problem Set</a> (sección Graph Algorithms), <a class="problem-link" href="https://codeforces.com/problemset?tags=dfs%20and%20similar" target="_blank" rel="noopener">Codeforces</a> (tag <em>dfs and similar</em>) y <a class="problem-link" href="https://www.hackerrank.com/interview/interview-preparation-kit/graphs/challenges" target="_blank" rel="noopener">HackerRank Interview Kit — Graphs</a></li>
                     </ul>
                 </div>
             </div>
